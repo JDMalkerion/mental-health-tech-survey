@@ -32,11 +32,23 @@ PLOTLY_LAYOUT = dict(
     paper_bgcolor="#12141A",
     plot_bgcolor="#12141A",
     font=dict(color="#EDEAE3", family="sans-serif"),
+    xaxis=dict(gridcolor="#262A35", zerolinecolor="#262A35"),
+    yaxis=dict(gridcolor="#262A35", zerolinecolor="#262A35"),
 )
 
-# Axis grid styling — merged into each chart's xaxis/yaxis dicts individually
-# (cannot live in PLOTLY_LAYOUT itself since charts also pass explicit xaxis/yaxis kwargs)
-_AXIS_STYLE = dict(gridcolor="#262A35", zerolinecolor="#262A35")
+
+def apply_theme(fig, xaxis_extra=None, yaxis_extra=None, **kwargs):
+    """
+    Applies the shared dark theme layout to a Plotly Figure, safely merging
+    custom axis parameters without keyword argument collisions.
+    """
+    layout = dict(PLOTLY_LAYOUT)
+    if xaxis_extra:
+        layout["xaxis"] = {**layout["xaxis"], **xaxis_extra}
+    if yaxis_extra:
+        layout["yaxis"] = {**layout["yaxis"], **yaxis_extra}
+    fig.update_layout(**layout, **kwargs)
+    return fig
 
 # -----------------------------------------------------------------------------
 # 1. Page Configuration & Custom CSS
@@ -269,12 +281,12 @@ else:
                 insidetextanchor="middle",
                 textfont=dict(color="#12141A", size=12),
             )
-            fig_geo.update_layout(
-                **PLOTLY_LAYOUT,
+            apply_theme(
+                fig_geo,
+                xaxis_extra=dict(range=[0, 100], title="Treatment Rate (%)"),
+                yaxis_extra=dict(title=""),
                 margin=dict(l=20, r=20, t=30, b=20),
                 height=380,
-                xaxis=dict(**_AXIS_STYLE, range=[0, 100], title="Treatment Rate (%)"),
-                yaxis=dict(**_AXIS_STYLE, title=""),
             )
             st.plotly_chart(fig_geo, use_container_width=True)
 
@@ -350,12 +362,12 @@ else:
                 ),
             )
         )
-        fig_pred.update_layout(
-            **PLOTLY_LAYOUT,
+        apply_theme(
+            fig_pred,
+            xaxis_extra=dict(title=predictor_labels[selected_feature]),
+            yaxis_extra=dict(title="Treatment Rate (%)", range=[0, 105]),
             margin=dict(l=20, r=20, t=30, b=20),
             height=380,
-            xaxis=dict(**_AXIS_STYLE, title=predictor_labels[selected_feature]),
-            yaxis=dict(**_AXIS_STYLE, title="Treatment Rate (%)", range=[0, 105]),
         )
         st.plotly_chart(fig_pred, use_container_width=True)
 
@@ -418,13 +430,13 @@ else:
                 textfont=dict(color="#EDEAE3"),
             )
         )
-        fig_gap.update_layout(
-            **PLOTLY_LAYOUT,
+        apply_theme(
+            fig_gap,
             barmode="group",
             margin=dict(l=20, r=20, t=30, b=20),
             height=380,
-            xaxis=dict(**_AXIS_STYLE, title="Response Category"),
-            yaxis=dict(**_AXIS_STYLE, title="Response Rate (%)", range=[0, 100]),
+            xaxis_extra=dict(title="Response Category"),
+            yaxis_extra=dict(title="Response Rate (%)", range=[0, 100]),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
         st.plotly_chart(fig_gap, use_container_width=True)
@@ -470,13 +482,13 @@ else:
                 textfont=dict(color="#EDEAE3"),
             )
         )
-        fig_rem.update_layout(
-            **PLOTLY_LAYOUT,
+        apply_theme(
+            fig_rem,
             barmode="group",
             margin=dict(l=20, r=20, t=30, b=20),
             height=380,
-            xaxis=dict(**_AXIS_STYLE, title="Work Setting"),
-            yaxis=dict(**_AXIS_STYLE, title="Disclosure Willingness (% Yes)", range=[0, 65]),
+            xaxis_extra=dict(title="Work Setting"),
+            yaxis_extra=dict(title="Disclosure Willingness (% Yes)", range=[0, 65]),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
         st.plotly_chart(fig_rem, use_container_width=True)
