@@ -11,7 +11,8 @@ __pycache__/
 *.so
 
 # Data
-data/
+data/*
+!data/survey.csv
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
