@@ -2,6 +2,7 @@
 
 An exploratory data analysis and interactive Streamlit dashboard benchmarking mental health treatment rates, workplace attitudes, and disclosure dynamics across the technology sector using the 2014 OSMI Mental Health in Tech Survey.
 
+**Live Demo:** https://mental-health-tech-survey-gujdvph8mrjmyygqexj8pd.streamlit.app/
 ---
 
 ## Business Context & Framing
@@ -88,6 +89,3 @@ To inspect the 20-chart exploratory analysis notebook top-to-bottom:
 jupyter notebook eda_notebook.ipynb
 ```
 
----
-
-*Not currently deployed live — see "How to Run Locally" above.*
