@@ -60,15 +60,10 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Dataset Setup
 
-The raw survey dataset is gitignored. Download the dataset directly from Kaggle:
+### Dataset
 
-1. Download the [OSMI Mental Health in Tech Survey (2014)](https://www.kaggle.com/datasets/osmi/mental-health-in-tech-survey).
-2. Place the downloaded `survey.csv` inside the `data/` directory at the project root:
-   ```bash
-   mkdir -p data
-   mv /path/to/downloaded/survey.csv data/survey.csv
+The dataset (`data/survey.csv`) is included in this repository. It's the 2014 OSMI Mental Health in Tech Survey, originally sourced from [Kaggle](https://www.kaggle.com/datasets/osmi/mental-health-in-tech-survey).
    ```
 
 ### Launch Interactive Dashboard
